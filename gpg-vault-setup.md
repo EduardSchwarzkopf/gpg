@@ -45,7 +45,7 @@ udisksctl unmount --block-device=/dev/sda1
 Desired output (not mounted):
 
 ```bash
-❯ lsblk                                     
+$ lsblk                                     
 NAME        MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
 sda           8:0    1   7,5G  0 disk 
 └─sda1        8:1    1   7,5G  0 part 

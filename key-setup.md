@@ -1,35 +1,53 @@
+# Key setup
 
 ## Prerequisites
 
+- setup your encrypted vault first.
 - Arch linux live system
-- `gpg` at least versiib `2.4`
+- `gpg` at least version `2.4`
 
-## Revokation
+## Setup
 
-Search for `Import[ation] of previous keys`
+!! AIR GAPPED MACHINE !!
 
+Run all commands below as root.
 
-## GnuPG Setup
-         
+set keyboard layout with;
+
 ```bash
-$ export GNUPGHOME=/mnt
-$ gpgconf --list-dirs --verbose -- homedir
-/mnt
-
-$ echo require-secmem >> ${GNUPGHOME}/gpg.conf
-
-$ echo ask-cert-level >> ${GNUPGHOME}/gpg.conf
-$ echo ask-cert-expire >> ${GNUPGHOME}/gpg.conf
-
-
-$ echo 'cert-digest-algo SHA512' >> ${GNUPGHOME}/gpg.conf
+localectl --no-convert set-keymap de-latin1-nodeadkeys
 ```
 
+check your vault with `lsblk`. We will use `sda` from now on.
+
+Open your GnuPG vault:
+
+```bash
+cryptsetup open -- /dev/sda1 GnuPG-home
+Enter passphrase for /dev/sda1: 
+```
+
+mount your vault:
+
+```bash
+mkdir -p /mnt/gpg
+mount -- /dev/mapper/GnuPG-home /mnt/gpg
+```
+
+set the GnuPG home variable:
+
+```bash
+export GNUPGHOME=/mnt/gpg
+```
+
+Check if the homedir is set correctly:
+
+```bash
+gpgconf --list-dirs --verbose -- homedir
+/mnt/gpg
+```
 
 ## Generate key
-
-!!! AIR GAPPED MACHINE !!!
-
 
 ```bash
 gpg --full-generate-key --expert
@@ -287,14 +305,27 @@ ssb  ed25519/12D57EAFDEF2AB2D
 [ultimate] (1). Eduard Schwarzkopf (key for evoila) <eschwarzkopf@evoila.de>
 ```
 
-#### save
+#### Send Keys to card
+
+Signing Key:
 
 ```bash
+gpg> key 1
 gpg> keytocard
-gpg> quit
 ```
 
+Next the authentication key:
 
+```bash
+gpg> key 0
+gpg> key 2
+gpg> keytocard
+```
+
+Quit without saving
+```bash
+gpg> quit
+```
 
 #### export
 
@@ -328,3 +359,10 @@ tar --create --directory=${GNUPGHOME} --file=GnuPG_home.tar --verbose -- .
 ./
 ```
 
+### finish operation
+
+```bash
+gpgconf --kill all
+umount -- "${GNUPGHOME}"
+cryptsetup close gnupgp
+```

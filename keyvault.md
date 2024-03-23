@@ -10,8 +10,8 @@
 
 https://archlinux.org/download/
 
-- install https://tails.net/ on USB stick (test if cryptsetup is pre-installed)
-- use a live usb stick with a linux distro of your choice
+set keyboard layout to german: 
+
 
 
 ### GPG Private key Setup
@@ -227,6 +227,12 @@ sudo cryptsetup close -- GnuPG-home
 !! AIR GAPPED MACHINE !!
 
 Run all commands below as root.
+
+set keyboard layout with;
+
+```bash
+localectl --no-convert set-keymap de-latin1-nodeadkeys
+```
 
 Now you can put the gpg private key onto your storage device `/mnt`
 

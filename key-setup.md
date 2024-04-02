@@ -323,6 +323,7 @@ gpg> keytocard
 ```
 
 Quit without saving
+
 ```bash
 gpg> quit
 ```
@@ -335,8 +336,7 @@ gpg --export --output /tmp/public_keys.gpg
 
 Move `public_keys.gpg` to different storage device to make it public on an internet connected device.
 
-
-#### import 
+#### import
 
 ```bash
 gpg --import /tmp/public_keys.gpg
@@ -344,8 +344,7 @@ gpg --import /tmp/public_keys.gpg
 
 Import on your day to day computer. Not on your air gapped device!
 
-
-## Backup 
+## Backup
 
 !! AIR GAPPED !!
 
@@ -365,4 +364,14 @@ tar --create --directory=${GNUPGHOME} --file=GnuPG_home.tar --verbose -- .
 gpgconf --kill all
 umount -- "${GNUPGHOME}"
 cryptsetup close gnupgp
+```
+
+## GitHub
+
+Read this tutorial on how to [add a GPG key to your GitHub account](https://docs.github.com/en/authentication/managing-commit-signature-verification/adding-a-gpg-key-to-your-github-account)
+
+Get the key material with (replace `<your_key_id>`):
+
+```bash
+gpg --export --armor <your_key_id>
 ```

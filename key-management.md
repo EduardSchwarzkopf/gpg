@@ -1,4 +1,4 @@
-# Key setup
+# Key management
 
 ## Prerequisites
 
@@ -181,7 +181,7 @@ create a folder for your storage device and mount it:
 
 ```bash
 mkdir -p /mnt/usb
-mount -- /dev/sdx1 /mnt/gpg
+mount -- /dev/sdx1 /mnt/usb
 ```
 
 transfer your public key to your storage device:
